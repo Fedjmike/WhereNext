@@ -22,6 +22,6 @@ def min_distance(point,visited):
 	distances=[]
 	for temp_point in visited:
 		distances.append(distance(rad(point),rad(temp_point)))
-	print min(distances)
+	return min(distances)
 # print distance(rad(a),rad(b))
 # print distance(rad([a,b]))
