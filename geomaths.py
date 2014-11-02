@@ -23,7 +23,4 @@ def min_distance(point,visited):
 		distances.append(distance(rad(point),rad(temp_point)))
 	return min(distances)
 
-a=[30.0,180.0]
-b=[-30.0,0.0]
-
 print distance(rad(a),rad(b))
