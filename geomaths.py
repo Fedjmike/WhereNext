@@ -13,7 +13,8 @@ def rad(pair):
 # given a pair of coordinats, returns the geodesic distance between the two points
 def distance(a, b):
 	ca = math.acos(math.sin(a[0])*math.sin(b[0])+math.cos(a[0])*math.cos(b[0])*math.cos(a[1]-b[1]))
-	return ca
+	d=6371.0*ca
+	return d
 
 point=[0.0,270.0]
 visited=[[0.0,0.0],[90.0,90.0]]
