@@ -3,21 +3,42 @@ import geocoder
 from pygeocoder import Geocoder
 
 import operator
-import math
+from math import *
 
 import colorsys
 
 from geomaths import *
 
 scale_linear = operator.div
-scale_log = math.log
+scale_log = log
     
 def colour_red(value):
     return (255*value, 0, 0)
     
-def colour_hue(value):
-    return tuple(map(lambda x: x*255, colorsys.hsv_to_rgb(0.9375*value, 1.0, 1.0)))
+def colour_bluewhite(value):
+    value *= 255
+    return (255-value, 255-value, 255)
+    
+def colour_contour(value):
+    closeness = 0.04
+    invcloseness = 1/closeness
+    closeness_ = closeness*0.1
 
+    frac = round(value*10)-value*10
+    dist = abs(frac)
+    
+    if dist >= closeness or value < closeness_:
+        return (255, 255, 255)
+        
+    else:
+        return (dist*255*invcloseness, dist*255*invcloseness, dist*255*invcloseness)
+    
+def colour_hue(value):
+    return tuple(map(lambda x: x*255, colorsys.hsv_to_rgb(0.8*value, 1.0, 1.0)))
+
+def compose_colours(colour, scale):
+    return lambda x, y: colour(scale(x, y))
+    
 ###
 
 def compute(visited, width, height):
@@ -56,7 +77,7 @@ def plot(distances, largest, width, height, cfunction):
 
 width = 360
 height = 180
-colourf = lambda x, y: colour_hue(scale_linear(x, y))
+colourf = compose_colours(colour_red, scale_linear)
 
 ###
 
