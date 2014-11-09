@@ -1,6 +1,7 @@
 from Tkinter import *
 import geocoder
 from pygeocoder import Geocoder
+from pygeolib import GeocoderError
 
 import operator
 from math import *
@@ -88,8 +89,11 @@ print visited
 
 distances, largest, largest_at = compute(visited, width, height)
 
-print largest_at
-#print "You should travel to %s which is %d km away from anywhere you have been." % (Geocoder.reverse_geocode(*largest_at)[0], largest)
+try:
+    print "You should travel to %s which is %d km away from anywhere you have been." % (Geocoder.reverse_geocode(*largest_at)[0], largest)
+    
+except GeocoderError:
+    print "You should travel to %s which is %d km away from anywhere you have been." % (largest_at, largest)
 
 ###
     
