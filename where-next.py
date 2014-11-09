@@ -3,6 +3,7 @@ import geocoder
 from pygeocoder import Geocoder
 from pygeolib import GeocoderError
 
+import itertools
 import operator
 from math import *
 
@@ -42,16 +43,23 @@ def compose_colours(colour, scale):
     
 ###
 
+def frange(start, end, step):
+    assert(step != 0)
+    sample_count = (end - start) / step
+    return lambda: itertools.islice(itertools.count(start, step), sample_count)
+
 def compute(visited, width, height):
-    distances = [[0 for x in xrange(-180, 180)] for y in xrange(-90, 90)]
+    lat_range = frange(-90, 90, 0.5)
+    lng_range = frange(-180, 180, 0.5)
+    distances = [[0 for x in lng_range()] for y in lat_range()]
     largest = 0
     largest_at = (0.0, 0.0)
     
-    for lat in xrange(-90, 90):
-        for lng in xrange(-180, 180):
+    for lat in lat_range():
+        for lng in lng_range():
             point = (lat, lng)
             distance = min_distance(point, visited)
-            distances[lat+90][lng+180] = distance
+            distances[int(2*(lat+90))][int(2*(lng+180))] = distance
             
             #Largest yet?
             if distance > largest:
@@ -70,14 +78,14 @@ def plot(distances, largest, width, height, cfunction):
     for x in xrange(0, len(distances)):
         for y in xrange(0, len(distances[x])):
             colour = cfunction(distances[x][y], largest)
-            blit(image, y, 180-x, colour)
+            blit(image, y, 360-x, colour)
             
     return image
 
 ###
 
-width = 360
-height = 180
+width = 720
+height = 360
 colourf = compose_colours(colour_red, scale_linear)
 
 ###
