@@ -9,6 +9,7 @@ from math import *
 
 import colorsys
 
+from conversion import *
 from geomaths import *
 
 scale_linear = operator.div
@@ -48,18 +49,22 @@ def frange(start, end, step):
     sample_count = (end - start) / step
     return lambda: itertools.islice(itertools.count(start, step), sample_count)
 
+num = 800.0
+
 def compute(visited, width, height):
-    lat_range = frange(-90, 90, 0.5)
-    lng_range = frange(-180, 180, 0.5)
-    distances = [[0 for x in lng_range()] for y in lat_range()]
+    x_range = frange(-1.0, 1.0, 2.0/num)
+    y_range = frange(-1.0, 1.0, 2.0/num)
+    distances = [[0 for x in x_range()] for y in y_range()]
     largest = 0
     largest_at = (0.0, 0.0)
     
-    for lat in lat_range():
-        for lng in lng_range():
-            point = (lat, lng)
+    for x in x_range():
+        print x
+        for y in y_range():
+            point = world_to_geo([x, y])
+            print point
             distance = min_distance(point, visited)
-            distances[int(2*(lat+90))][int(2*(lng+180))] = distance
+            distances[int(num/2.0*(x+1.0))][int(num/2.0*(y+1.0))] = distance
             
             #Largest yet?
             if distance > largest:
@@ -78,19 +83,19 @@ def plot(distances, largest, width, height, cfunction):
     for x in xrange(0, len(distances)):
         for y in xrange(0, len(distances[x])):
             colour = cfunction(distances[x][y], largest)
-            blit(image, y, 360-x, colour)
+            blit(image, x, int(num)-y, colour)
             
     return image
 
 ###
 
-width = 720
-height = 360
+width = int(num)
+height = int(num)
 colourf = compose_colours(colour_red, scale_linear)
 
 ###
 
-visited_strings = ["london", "johannesburg", "hong kong", "los angeles", "new york", "sydney"]
+visited_strings = ["waitangi wharf","inuvik","general Nakar","antonio gil","Western Australia","Marquesas Islands","Russia,+694550","plaatjie","campos","solomon islands","antarctica", "london", "moscow", "saint petersburg", "antalya", "san fransisco", "los angeles", "new york", "cairo", "bangalore", "tunis", "dubai", "tashkent"]
 visited = [(location.lat, location.lng) for location in [geocoder.google(place) for place in visited_strings]]
 
 print visited
