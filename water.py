@@ -10,11 +10,10 @@ water_colour = (0, 255, 0)
 f=open(filename,'rb')
 pixel=pickle.load(f)
 
+# takes a (lat,lon) pair and returns whether or not the spot is water
 def is_water(geo_pair):
-	world_pair=geo_to_world(geo_pair)
-	[pix_x,pix_y]=world_to_pixel(world_pair)
-	print pix_x,pix_y
-	print pixel[0][0]
+	webm_pair=geo_to_webm(geo_pair)
+	[pix_x,pix_y]=webm_to_pixel(webm_pair)
 	if pixel[pix_y][pix_x]==1:
 		return 1
 	else:
