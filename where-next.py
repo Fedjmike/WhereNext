@@ -52,8 +52,8 @@ def frange(start, end, step):
 num = 800.0
 
 def compute(visited, width, height):
-    x_range = frange(-1.0, 1.0, 2.0/num)
-    y_range = frange(-1.0, 1.0, 2.0/num)
+    x_range = frange(0.0, 1.0, 1.0/num)
+    y_range = frange(0.0, 1.0, 1.0/num)
     distances = [[0 for x in x_range()] for y in y_range()]
     largest = 0
     largest_at = (0.0, 0.0)
@@ -63,7 +63,7 @@ def compute(visited, width, height):
         for y in y_range():
             point = webm_to_geo([x, y])
             distance = min_distance(point, visited)
-            distances[int(num/2.0*(x+1.0))][int(num/2.0*(y+1.0))] = distance
+            distances[int(num*x)][int(num*y)] = distance
             
             #Largest yet?
             if distance > largest:
@@ -88,13 +88,13 @@ def plot(distances, largest, width, height, cfunction):
 
 ###
 
-width = int(num)
-height = int(num)
+width = 800
+height = 800
 colourf = compose_colours(colour_red, scale_linear)
 
 ###
 
-visited_strings = ["paris", "barcelona", "nicosia", "mumbai", "bhubaneswar", "geneva", "delhi", "london", "moscow", "saint petersburg", "antalya", "san fransisco", "los angeles", "new york", "cairo", "bangalore", "tunis", "dubai", "tashkent"]
+visited_strings = ["moscow"]
 visited = [(location.lat, location.lng) for location in [geocoder.google(place) for place in visited_strings]]
 
 print visited
