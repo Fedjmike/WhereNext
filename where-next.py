@@ -49,21 +49,19 @@ def frange(start, end, step):
     sample_count = (end - start) / step
     return lambda: itertools.islice(itertools.count(start, step), sample_count)
 
-num = 800.0
-
 def compute(visited, width, height):
-    x_range = frange(0.0, 1.0, 1.0/num)
-    y_range = frange(0.0, 1.0, 1.0/num)
-    distances = [[0 for x in x_range()] for y in y_range()]
+    x_range = xrange(0, width)
+    y_range = xrange(0, height)
+    distances = [[0 for x in x_range] for y in y_range]
     largest = 0
     largest_at = (0.0, 0.0)
     
-    for x in x_range():
+    for x in x_range:
         print x
-        for y in y_range():
-            point = webm_to_geo([x, y])
+        for y in y_range:
+            point = webm_to_geo([float(x)/width, float(y)/height])
             distance = min_distance(point, visited)
-            distances[int(num*x)][int(num*y)] = distance
+            distances[x][y] = distance
             
             #Largest yet?
             if distance > largest:
@@ -82,7 +80,7 @@ def plot(distances, largest, width, height, cfunction):
     for x in xrange(0, len(distances)):
         for y in xrange(0, len(distances[x])):
             colour = cfunction(distances[x][y], largest)
-            blit(image, x, int(num)-y, colour)
+            blit(image, x, height-y, colour)
             
     return image
 
@@ -94,7 +92,7 @@ colourf = compose_colours(colour_red, scale_linear)
 
 ###
 
-visited_strings = ["moscow"]
+visited_strings = ["Umag, Croatia","Johannesburg","Bangkok"]
 visited = [(location.lat, location.lng) for location in [geocoder.google(place) for place in visited_strings]]
 
 print visited

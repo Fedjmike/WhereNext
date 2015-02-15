@@ -20,6 +20,9 @@ def distance(geo_a, geo_b):
 
 def min_distance(point,visited):
 	distances=[]
+	# cuts off antarctica
+	if point[0]<-58.0:
+		return 0
 	if is_water(point)==1:
 		return 0
 	for temp_point in visited:

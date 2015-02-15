@@ -12,6 +12,8 @@ pixel=pickle.load(f)
 
 # takes a (lat,lon) pair and returns whether or not the spot is water
 def is_water(geo_pair):
+	if geo_pair[0]>85.0:
+		return 1
 	webm_pair=geo_to_webm(geo_pair)
 	[pix_x,pix_y]=webm_to_pixel(webm_pair)
 	if pixel[pix_y][pix_x]==1:
