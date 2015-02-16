@@ -12,6 +12,16 @@ import colorsys
 from conversion import *
 from geomaths import *
 
+###
+
+
+visited_strings = ["Umag, Croatia","Johannesburg","Bangkok"]
+width = 800
+height = 800
+
+
+###
+
 scale_linear = operator.div
 scale_log = log
     
@@ -92,7 +102,6 @@ colourf = compose_colours(colour_red, scale_linear)
 
 ###
 
-visited_strings = ["Umag, Croatia","Johannesburg","Bangkok"]
 visited = [(location.lat, location.lng) for location in [geocoder.google(place) for place in visited_strings]]
 
 print visited
